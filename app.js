@@ -97,7 +97,7 @@ fontDown.onclick = () => {
 };
 
 /* =========================
-   DARK MODE
+   DARK OR LIGHT MODE
 ========================= */
 if (localStorage.getItem(DARK_MODE_KEY) === "on") {
   document.documentElement.classList.add("dark");
@@ -149,3 +149,4 @@ micBtn.onclick = () => {
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
+
