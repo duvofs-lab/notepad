@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Online Notepad with Speech to Text | duvofs</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Free online notepad with auto save, speech to text, character count and word count. Type or speak and export as text or PDF." />
+  <meta name="keywords" content="online notepad, speech to text, character counter, word counter, free notepad online" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- SEO Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "duvofs Online Notepad",
+    "url": "https://notepad.duvofs.com",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "description": "Free online notepad with speech to text, auto save, character counter and word counter.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- LEFT -->
+    <textarea id="notepad" placeholder="Start typing or speaking here..."></textarea>
+
+    <!-- RIGHT -->
+    <div class="side-panel">
+      <div class="stats">
+        <div>Characters: <span id="charCount">0</span></div>
+        <div>Words: <span id="wordCount">0</span></div>
+      </div>
+
+      <button id="saveBtn">Save as Text</button>
+      <button id="pdfBtn">Export as PDF</button>
+      <button id="darkModeBtn">🌙 Dark Mode</button>
+
+      <div class="font-controls">
+        <button id="fontUp">▲</button>
+        <span>Fonts</span>
+        <button id="fontDown">▼</button>
+      </div>
+
+      <p class="hint">
+        Click on “Save as Text” to save your notes on your device
+      </p>
+
+      <div class="mic">
+        <button id="micBtn">🎤</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
