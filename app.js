@@ -7,6 +7,7 @@ const micBtn = document.getElementById("micBtn");
 const fontUp = document.getElementById("fontUp");
 const fontDown = document.getElementById("fontDown");
 const darkBtn = document.getElementById("darkModeBtn");
+const FONT_SIZE_KEY = "duvofs_notepad_font_size";
 
 let fontSize = parseInt(localStorage.getItem(FONT_SIZE_KEY)) || 14;
 notepad.style.fontSize = fontSize + "px";
@@ -51,7 +52,11 @@ pdfBtn.onclick = () => {
 
 /* FONT SIZE */
 fontUp.onclick = () => {
-  if (fontSize < 18) fontSize++;
+  if (fontSize < 22) {
+  fontSize++;
+  notepad.style.fontSize = fontSize + "px";
+  localStorage.setItem(FONT_SIZE_KEY, fontSize);
+}
   notepad.style.fontSize = fontSize + "px";
 };
 
@@ -103,4 +108,5 @@ micBtn.onclick = () => {
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
+
 
