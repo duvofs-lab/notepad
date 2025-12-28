@@ -8,7 +8,8 @@ const fontUp = document.getElementById("fontUp");
 const fontDown = document.getElementById("fontDown");
 const darkBtn = document.getElementById("darkModeBtn");
 
-let fontSize = 11;
+let fontSize = parseInt(localStorage.getItem(FONT_SIZE_KEY)) || 14;
+notepad.style.fontSize = fontSize + "px";
 let recognition;
 let isListening = false;
 
@@ -102,3 +103,4 @@ micBtn.onclick = () => {
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
+
