@@ -61,7 +61,11 @@ fontUp.onclick = () => {
 };
 
 fontDown.onclick = () => {
-  if (fontSize > 10) fontSize--;
+if (fontSize > 10) {
+  fontSize--;
+  notepad.style.fontSize = fontSize + "px";
+  localStorage.setItem(FONT_SIZE_KEY, fontSize);
+}
   notepad.style.fontSize = fontSize + "px";
 };
 
@@ -108,5 +112,6 @@ micBtn.onclick = () => {
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
+
 
 
