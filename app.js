@@ -1,3 +1,6 @@
+/* =========================
+   ELEMENT REFERENCES
+========================= */
 const notepad = document.getElementById("notepad");
 const charCount = document.getElementById("charCount");
 const wordCount = document.getElementById("wordCount");
@@ -7,32 +10,54 @@ const micBtn = document.getElementById("micBtn");
 const fontUp = document.getElementById("fontUp");
 const fontDown = document.getElementById("fontDown");
 const darkBtn = document.getElementById("darkModeBtn");
-const FONT_SIZE_KEY = "duvofs_notepad_font_size";
 
-let fontSize = parseInt(localStorage.getItem(FONT_SIZE_KEY)) || 14;
+/* =========================
+   LOCAL STORAGE KEYS
+========================= */
+const STORAGE_KEY = "duvofs_notepad_content";
+const FONT_SIZE_KEY = "duvofs_notepad_font_size";
+const DARK_MODE_KEY = "duvofs_darkmode";
+
+/* =========================
+   FONT SIZE SETUP
+========================= */
+let fontSize = parseInt(localStorage.getItem(FONT_SIZE_KEY), 10) || 14;
+fontSize = Math.min(Math.max(fontSize, 10), 22); // safety clamp
 notepad.style.fontSize = fontSize + "px";
+
+/* =========================
+   SPEECH VARIABLES
+========================= */
 let recognition;
 let isListening = false;
 
-const STORAGE_KEY = "duvofs_notepad_content";
-
-/* LOAD SAVED CONTENT */
+/* =========================
+   LOAD SAVED TEXT
+========================= */
 const savedText = localStorage.getItem(STORAGE_KEY);
 if (savedText) {
   notepad.value = savedText;
 }
 
-/* COUNT + AUTO SAVE */
+/* =========================
+   COUNT + AUTO SAVE
+========================= */
 function updateCounts() {
   const text = notepad.value;
   charCount.textContent = text.length;
-  wordCount.textContent = text.trim() ? text.trim().split(/\s+/).length : 0;
+  wordCount.textContent = text.trim()
+    ? text.trim().split(/\s+/).length
+    : 0;
+
   localStorage.setItem(STORAGE_KEY, text);
 }
+
 notepad.addEventListener("input", updateCounts);
 updateCounts();
 
-/* SAVE AS TEXT */
+/* =========================
+   SAVE AS TEXT
+========================= */
 saveBtn.onclick = () => {
   const blob = new Blob([notepad.value], { type: "text/plain" });
   const link = document.createElement("a");
@@ -41,7 +66,9 @@ saveBtn.onclick = () => {
   link.click();
 };
 
-/* EXPORT PDF */
+/* =========================
+   EXPORT AS PDF
+========================= */
 pdfBtn.onclick = () => {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -50,52 +77,60 @@ pdfBtn.onclick = () => {
   doc.save(`duvofsnotepad${Date.now()}.pdf`);
 };
 
-/* FONT SIZE */
+/* =========================
+   FONT SIZE CONTROLS
+========================= */
 fontUp.onclick = () => {
   if (fontSize < 22) {
-  fontSize++;
-  notepad.style.fontSize = fontSize + "px";
-  localStorage.setItem(FONT_SIZE_KEY, fontSize);
-}
-  notepad.style.fontSize = fontSize + "px";
+    fontSize++;
+    notepad.style.fontSize = fontSize + "px";
+    localStorage.setItem(FONT_SIZE_KEY, fontSize);
+  }
 };
 
 fontDown.onclick = () => {
-if (fontSize > 10) {
-  fontSize--;
-  notepad.style.fontSize = fontSize + "px";
-  localStorage.setItem(FONT_SIZE_KEY, fontSize);
-}
-  notepad.style.fontSize = fontSize + "px";
+  if (fontSize > 10) {
+    fontSize--;
+    notepad.style.fontSize = fontSize + "px";
+    localStorage.setItem(FONT_SIZE_KEY, fontSize);
+  }
 };
 
-/* DARK MODE */
-if (localStorage.getItem("duvofs_darkmode") === "on") {
+/* =========================
+   DARK MODE
+========================= */
+if (localStorage.getItem(DARK_MODE_KEY) === "on") {
   document.documentElement.classList.add("dark");
 }
 
 darkBtn.onclick = () => {
   document.documentElement.classList.toggle("dark");
   localStorage.setItem(
-    "duvofs_darkmode",
+    DARK_MODE_KEY,
     document.documentElement.classList.contains("dark") ? "on" : "off"
   );
 };
 
-/* SPEECH TO TEXT */
+/* =========================
+   SPEECH TO TEXT
+========================= */
 if ("webkitSpeechRecognition" in window) {
   recognition = new webkitSpeechRecognition();
   recognition.continuous = true;
 
   recognition.onresult = (event) => {
-    const transcript = event.results[event.results.length - 1][0].transcript;
+    const transcript =
+      event.results[event.results.length - 1][0].transcript;
     notepad.value += " " + transcript;
     updateCounts();
   };
 }
 
 micBtn.onclick = () => {
-  if (!recognition) return alert("Speech not supported");
+  if (!recognition) {
+    alert("Speech recognition not supported in this browser");
+    return;
+  }
 
   if (!isListening) {
     recognition.start();
@@ -108,10 +143,9 @@ micBtn.onclick = () => {
   }
 };
 
-/* SERVICE WORKER */
+/* =========================
+   SERVICE WORKER
+========================= */
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
-
-
-
